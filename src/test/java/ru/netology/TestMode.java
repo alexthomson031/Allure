@@ -3,6 +3,7 @@ package ru.netology;
 import com.codeborne.selenide.Condition;
 import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.logevents.SelenideLogger;
+import io.qameta.allure.selenide.AllureSelenide;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,16 +18,12 @@ public class TestMode {
     @BeforeAll
     static void setUpAll() {
         SelenideLogger.addListener("allure", new AllureSelenide());
+        Configuration.headless = true;
+        open("http://localhost:9999");
     }
     @AfterAll
     static void tearDownAll() {
         SelenideLogger.removeListener("allure");
-    }
-
-    @BeforeEach
-    void setUpAll() {
-        Configuration.headless = true;
-        open("http://localhost:9999");
     }
 
     @Test
@@ -35,7 +32,7 @@ public class TestMode {
         $("[data-test-id='login'] input").setValue(user.getLogin());
         $("[data-test-id='password'] input").setValue(user.getPassword());
         $("[data-test-id='action-login']").click();
-        $("h2").shouldHave(Condition.exactText(" Личный кабинет"), Duration.ofSeconds(7));
+        $("h2").shouldHave(Condition.exactText("Личный кабинет"), Duration.ofSeconds(7));
     }
 
     @Test
